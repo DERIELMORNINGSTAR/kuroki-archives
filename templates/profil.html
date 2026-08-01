@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Profil — Kuroki Archives{% endblock %}
+{% block content %}
+
+<section class="profile-card">
+  <div class="avatar">{{ current_user.username[0]|upper }}</div>
+  <h1 class="hero-title">{{ current_user.username }}</h1>
+  <p class="muted">{{ current_user.email }}</p>
+  {% if current_user.is_admin %}<span class="chip chip-active">Admin</span>{% endif %}
+</section>
+
+<div class="profile-actions">
+  {% if current_user.is_admin %}
+    <a href="{{ url_for('publier') }}" class="btn">Publier un article</a>
+  {% endif %}
+  <a href="{{ url_for('logout') }}" class="btn-ghost">Se déconnecter</a>
+</div>
+
+{% if current_user.is_admin %}
+<h2 class="section-title">Mes publications ({{ articles|length }})</h2>
+<div class="category-list">
+  {% for a in articles %}
+  <a href="{{ url_for('article', article_id=a.id) }}" class="category-row">
+    <span>{{ a.title }}</span>
+    <span class="chevron">›</span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

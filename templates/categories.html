@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Catégories — Kuroki Archives{% endblock %}
+{% block content %}
+
+<section class="hero hero--compact">
+  <p class="hero-eyebrow">Explorer</p>
+  <h1 class="hero-title">Catégories</h1>
+</section>
+
+<div class="category-list">
+  {% for c in categories %}
+  <a href="{{ url_for('categorie', nom=c) }}" class="category-row">
+    <span>{{ c }}</span>
+    <span class="chevron">›</span>
+  </a>
+  {% endfor %}
+</div>
+
+{% endblock %}

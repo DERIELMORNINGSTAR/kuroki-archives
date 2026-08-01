@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ nom }} — Kuroki Archives{% endblock %}
+{% block content %}
+
+<section class="hero hero--compact">
+  <p class="hero-eyebrow">Catégorie</p>
+  <h1 class="hero-title">{{ nom }}</h1>
+</section>
+
+<div class="chip-row">
+  {% for c in categories %}
+    <a href="{{ url_for('categorie', nom=c) }}" class="chip {{ 'chip-active' if c==nom }}">{{ c }}</a>
+  {% endfor %}
+</div>
+
+{% if not articles %}
+  <div class="empty-state"><p>Rien dans « {{ nom }} » pour l'instant.</p></div>
+{% else %}
+  <div class="article-grid">
+    {% for a in articles %}
+    <a href="{{ url_for('article', article_id=a.id) }}" class="card">
+      {% if a.image_url %}
+        <div class="card-media" style="background-image:url('{{ a.image_url }}')"></div>
+      {% else %}
+        <div class="card-media card-media--empty">{{ a.category }}</div>
+      {% endif %}
+      <div class="card-body">
+        <span class="card-tag">{{ a.category }}</span>
+        <h3 class="card-title">{{ a.title }}</h3>
+        <p class="card-date">{{ a.created_at.strftime('%d %b %Y') }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% endblock %}

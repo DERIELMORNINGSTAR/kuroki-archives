@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#12141f">
+<title>{% block title %}Kuroki Archives{% endblock %}</title>
+<link rel="manifest" href="{{ url_for('manifest') }}">
+<link rel="icon" href="{{ url_for('static', filename='icons/icon-192.png') }}">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <a href="{{ url_for('accueil') }}" class="logo">
+    <span class="logo-mark">紅</span>刻<span class="logo-sub">KUROKI ARCHIVES</span>
+  </a>
+</header>
+
+<main class="content">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-stack">
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<nav class="tabbar">
+  <a href="{{ url_for('accueil') }}" class="tab {{ 'active' if active_tab=='accueil' }}">
+    <span class="tab-icon">▣</span><span>Accueil</span>
+  </a>
+  <a href="{{ url_for('categories') }}" class="tab {{ 'active' if active_tab=='categories' }}">
+    <span class="tab-icon">▤</span><span>Catégories</span>
+  </a>
+  <a href="{{ url_for('communaute') if current_user.is_authenticated else url_for('login') }}" class="tab {{ 'active' if active_tab=='communaute' }}">
+    <span class="tab-icon">◈</span><span>Communauté</span>
+  </a>
+  <a href="{{ url_for('favoris') if current_user.is_authenticated else url_for('login') }}" class="tab {{ 'active' if active_tab=='favoris' }}">
+    <span class="tab-icon">★</span><span>Favoris</span>
+  </a>
+  <a href="{{ url_for('profil') if current_user.is_authenticated else url_for('login') }}" class="tab {{ 'active' if active_tab=='profil' }}">
+    <span class="tab-icon">◉</span><span>Profil</span>
+  </a>
+</nav>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

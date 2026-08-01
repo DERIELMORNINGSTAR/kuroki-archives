@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Publier — Kuroki Archives{% endblock %}
+{% block content %}
+
+<section class="auth-card">
+  <h1 class="hero-title">Nouvel article</h1>
+  <form method="post" class="auth-form">
+    <label>Titre</label>
+    <input type="text" name="title" required>
+
+    <label>Catégorie</label>
+    <select name="category">
+      {% for c in categories %}
+      <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Image (URL, optionnel)</label>
+    <input type="url" name="image_url" placeholder="https://...">
+
+    <label>Contenu</label>
+    <textarea name="content" rows="8" required></textarea>
+
+    <button type="submit" class="btn">Publier</button>
+  </form>
+</section>
+
+{% endblock %}

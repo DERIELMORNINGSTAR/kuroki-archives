@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ article.title }} — Kuroki Archives{% endblock %}
+{% block content %}
+
+<article class="article-full">
+  {% if article.image_url %}
+    <div class="article-hero" style="background-image:url('{{ article.image_url }}')"></div>
+  {% endif %}
+
+  <span class="card-tag">{{ article.category }}</span>
+  <h1 class="article-title">{{ article.title }}</h1>
+  <p class="card-date">{{ article.created_at.strftime('%d %B %Y') }} · par {{ article.author.username }}</p>
+
+  {% if current_user.is_authenticated %}
+  <form action="{{ url_for('toggle_favori', article_id=article.id) }}" method="post" class="fav-form">
+    <button type="submit" class="btn-ghost {{ 'is-active' if is_fav }}">
+      {{ '★ Dans les favoris' if is_fav else '☆ Ajouter aux favoris' }}
+    </button>
+  </form>
+  {% endif %}
+
+  <div class="article-body">
+    {{ article.content | replace('\n', '<br>') | safe }}
+  </div>
+</article>
+
+<section class="comments">
+  <h2 class="section-title">Commentaires ({{ article.comments|length }})</h2>
+
+  {% if current_user.is_authenticated %}
+  <form method="post" class="comment-form">
+    <textarea name="content" placeholder="Ton avis sur cet épisode/annonce..." required></textarea>
+    <button type="submit" class="btn">Envoyer</button>
+  </form>
+  {% else %}
+  <p class="muted"><a href="{{ url_for('login') }}">Connecte-toi</a> pour commenter.</p>
+  {% endif %}
+
+  <div class="comment-list">
+    {% for c in article.comments|sort(attribute='created_at', reverse=true) %}
+    <div class="comment">
+      <p class="comment-author">{{ c.user.username }}</p>
+      <p class="comment-content">{{ c.content }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% endblock %}

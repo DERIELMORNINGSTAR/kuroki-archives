@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Connexion — Kuroki Archives{% endblock %}
+{% block content %}
+
+<section class="auth-card">
+  <h1 class="hero-title">Connexion</h1>
+  <form method="post" class="auth-form">
+    <label>Nom d'utilisateur ou email</label>
+    <input type="text" name="identifiant" required>
+    <label>Mot de passe</label>
+    <input type="password" name="password" required>
+    <button type="submit" class="btn">Se connecter</button>
+  </form>
+  <p class="muted">Pas de compte ? <a href="{{ url_for('register') }}">Créer un compte</a></p>
+</section>
+
+{% endblock %}

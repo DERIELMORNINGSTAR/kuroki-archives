@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Kuroki Archives — Accueil{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <p class="hero-eyebrow">Dernières parutions</p>
+  <h1 class="hero-title">Le flux de la semaine</h1>
+  <p class="hero-sub">Actus, sorties de saison et sorties films, condensées pour toi.</p>
+</section>
+
+{% if not articles %}
+  <div class="empty-state">
+    <p>Aucun article pour le moment.</p>
+    {% if current_user.is_authenticated and current_user.is_admin %}
+      <a class="btn" href="{{ url_for('publier') }}">Publier le premier article</a>
+    {% endif %}
+  </div>
+{% else %}
+  <div class="article-grid">
+    {% for a in articles %}
+    <a href="{{ url_for('article', article_id=a.id) }}" class="card">
+      {% if a.image_url %}
+        <div class="card-media" style="background-image:url('{{ a.image_url }}')"></div>
+      {% else %}
+        <div class="card-media card-media--empty">{{ a.category }}</div>
+      {% endif %}
+      <div class="card-body">
+        <span class="card-tag">{{ a.category }}</span>
+        <h3 class="card-title">{{ a.title }}</h3>
+        <p class="card-date">{{ a.created_at.strftime('%d %b %Y') }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% if current_user.is_authenticated and current_user.is_admin %}
+<a href="{{ url_for('publier') }}" class="fab" title="Publier un article">✎</a>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Communauté — Kuroki Archives{% endblock %}
+{% block content %}
+
+<section class="hero hero--compact">
+  <p class="hero-eyebrow">Discussion</p>
+  <h1 class="hero-title">Communauté</h1>
+</section>
+
+<form method="post" class="comment-form">
+  <textarea name="content" placeholder="Partage une théorie, une reco, un avis..." required></textarea>
+  <button type="submit" class="btn">Publier</button>
+</form>
+
+<div class="comment-list">
+  {% for p in posts %}
+  <div class="comment">
+    <p class="comment-author">{{ p.author.username }}</p>
+    <p class="comment-content">{{ p.content }}</p>
+    <p class="card-date">{{ p.created_at.strftime('%d %b %Y, %H:%M') }}</p>
+  </div>
+  {% else %}
+  <div class="empty-state"><p>Sois le premier à lancer une discussion.</p></div>
+  {% endfor %}
+</div>
+
+{% endblock %}
